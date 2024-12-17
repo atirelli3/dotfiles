@@ -2,7 +2,7 @@
 #
 # Dotfiles configurator script by @7ir3
 
-### MOVE THIS FILE TO THE DOTFILES REPOSITORY (REMEMBER FOR LATER) ###
+
 
 ################################################################################
 # GLOBAL VARIABLES
