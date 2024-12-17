@@ -44,10 +44,12 @@ os=$?      # Catch return value
 case $os in
   0) 
     sudo pacman -Sy --noconfirm bash bc coreutils git jq playerctl          # Install dependencies (Arch Linux)
+    sudo pacman -Sy --noconfirm nerd-fonts                                  # Install nerd fonts (Arch Linux)
     sudo pacman -Sy --noconfirm tmux ;;                                     # Install tmux (Arch Linux)
   1) 
     brew install --cask font-monaspace-nerd-font font-noto-sans-symbols-2   # Install fonts (macOS)
     brew install bash bc coreutils gawk gh glab gsed jq nowplaying-cli      # Install dependencies (macOS)
+    brew install font-hack-nerd-font                                        # Install nerd fonts (macOS)
     brew install tmux ;;                                                    # Install tmux (macOS)
   *) 
     echo "Unsupported OS" && exit 1 ;;                                      # Exit if OS is unsupported
