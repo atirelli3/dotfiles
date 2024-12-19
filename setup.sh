@@ -9,7 +9,12 @@
 #
 # NOTE: Edit the following variables to match your desired system configuration.
 
-DOTFILESNAME=".999666333"  # Dotfiles repository name
+DOTNAME=".999666333"                          # Dotfiles repository name
+DOTPATH="${HOME}/${DOTNAME}"                  # Dotfiles repository path
+
+FFPATH=""                                     # FastFetch path
+TMUXPATH="${DOTPATH}/tmux"                    # Tmux path
+KANATAPATH="${DOTPATH}/kanata"                # Kanata path
 
 ################################################################################
 ################################################################################
@@ -22,9 +27,9 @@ DOTFILESNAME=".999666333"  # Dotfiles repository name
 # NOTE: Do not edit the following script unless you know what you are doing.
 # --- Detect OS {macOS/Arch Linux}
 detect_os() {
-  [[ -f /etc/arch-release ]] && return 0    # Arch Linux
-  [[ "$OSTYPE" == "darwin"* ]] && return 1  # macOS
-  return 255                                # Unsupported OS
+  [[ -f /etc/arch-release ]] && return 0      # Arch Linux
+  [[ "$OSTYPE" == "darwin"* ]] && return 1    # macOS
+  return 255                                  # Unsupported OS
 }
 
 ################################################################################
@@ -37,26 +42,20 @@ detect_os() {
 #
 # NOTE: Do not edit the following script unless you know what you are doing.
 
-# ======  TMUX  ======
 # --- Requirements
 detect_os  # Detect OS
 os=$?      # Catch return value
 case $os in
-  0) 
-    sudo pacman -Sy --noconfirm bash bc coreutils git jq playerctl          # Install dependencies (Arch Linux)
-    sudo pacman -Sy --noconfirm nerd-fonts                                  # Install nerd fonts (Arch Linux)
-    sudo pacman -Sy --noconfirm tmux ;;                                     # Install tmux (Arch Linux)
-  1) 
-    brew install --cask font-monaspace-nerd-font font-noto-sans-symbols-2   # Install fonts (macOS)
-    brew install bash bc coreutils gawk gh glab gsed jq nowplaying-cli      # Install dependencies (macOS)
-    brew install font-hack-nerd-font                                        # Install nerd fonts (macOS)
-    brew install tmux ;;                                                    # Install tmux (macOS)
+  0)
+    ./tmux/setup.sh "archlinux" $DOTPATH $TMUXPATH
+    ./kanata/setup.sh "archlinux" $DOTPATH $TMUXPATH ;;
+  1)
+    ./tmux/setup.sh "macos" $DOTPATH $TMUXPATH
+    ./kanata/setup.sh "macos" $DOTPATH $TMUXPATH ;;
   *) 
-    echo "Unsupported OS" && exit 1 ;;                                      # Exit if OS is unsupported
+    echo "Unsupported OS" && exit 1 ;;        # Exit if OS is unsupported
 esac
 
-# --- TPM (Tmux Plugin Manager)
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+sudo reboot now
 
-# --- Dynamic link tmux configuration
-ln -sf "$HOME/${DOTFILESNAME}/tmux/" "$HOME/.config/tmux"
+exit 0
